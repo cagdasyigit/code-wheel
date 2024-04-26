@@ -9,6 +9,11 @@ const AuthStore = create<IAuthStore>((set) => ({
       isAuthenticated: true,
       token,
     })),
+  logout: () =>
+    set(() => ({
+      isAuthenticated: false,
+      token: '',
+    })),
 }));
 
 export default AuthStore;

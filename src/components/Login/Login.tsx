@@ -5,11 +5,12 @@ import bgImage from '../../resources/images/codewheel-bg.jpeg';
 import logo from '../../resources/images/logo.png';
 import github from '../../resources/images/github-logo.png';
 import useAuthentication from '../../hooks/useAuthentication';
+import Feedback from '../Feedback';
 
 const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 
 const Login = () => {
-  useAuthentication();
+  const { loading, error } = useAuthentication();
 
   const handleLoginWithGithubClick = () => {
     window.location.assign(
@@ -38,6 +39,7 @@ const Login = () => {
             <i>Don&apos;t reinvent the wheel!</i>
           </p>
           <Button
+            disabled={loading}
             size={'large'}
             variant={'contained'}
             color={'info'}
@@ -48,6 +50,7 @@ const Login = () => {
           </Button>
         </Box>
       </Stack>
+      <Feedback open={!!error} message={error} autoHide={true} />
     </Stack>
   );
 };
