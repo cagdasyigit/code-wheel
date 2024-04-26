@@ -1,16 +1,21 @@
-import React from 'react'
-import { Box, Button, Stack } from '@mui/material'
-import styles from './Login.module.scss'
-import bgImage from '../../resources/images/codewheel-bg.jpeg'
-import logo from '../../resources/images/logo.png'
-import github from '../../resources/images/github-logo.png'
+import React from 'react';
+import { Box, Button, Stack } from '@mui/material';
+import styles from './Login.module.scss';
+import bgImage from '../../resources/images/codewheel-bg.jpeg';
+import logo from '../../resources/images/logo.png';
+import github from '../../resources/images/github-logo.png';
+import useAuthentication from '../../hooks/useAuthentication';
+
+const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 
 const Login = () => {
+  useAuthentication();
+
   const handleLoginWithGithubClick = () => {
     window.location.assign(
-      'https://github.com/login/oauth/authorize?client_id=549d0c757e7a80854fc6'
-    )
-  }
+      `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`
+    );
+  };
 
   return (
     <Stack
@@ -44,7 +49,7 @@ const Login = () => {
         </Box>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

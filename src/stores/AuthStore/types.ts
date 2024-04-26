@@ -1,3 +1,5 @@
 export interface IAuthStore {
-  isAuthenticated: boolean
+  isAuthenticated: boolean;
+  token: string;
+  authenticate: (token: string) => void;
 }
