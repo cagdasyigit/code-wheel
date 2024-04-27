@@ -27,14 +27,16 @@ import Paper from '@mui/material/Paper';
 import { Data } from './types';
 import DataTableToolbar from './DataTableToolbar';
 import DataTableHead from './DataTableHead';
-import { dataTableHeadCells } from './utils';
+import { dataTableHeadCells, getComparator, stableSort } from './utils';
 import DataStore from '../../stores/DataStore';
 import useFetchData from '../../hooks/useFetchData';
 import { CircularProgress } from '@mui/material';
+import Feedback from '../Feedback';
+import { useEffect, useState } from 'react';
 
 const DataTable = () => {
   const {
-    list: rows,
+    list,
     currentPage: page,
     pageSize: rowsPerPage,
     order,
@@ -44,8 +46,12 @@ const DataTable = () => {
     setOrderBy,
     totalCount,
   } = DataStore((state) => state);
+  const [rows, setRows] = useState<Data[]>([]);
+  const { loading, error } = useFetchData();
 
-  const { loading } = useFetchData();
+  useEffect(() => {
+    setRows(stableSort<Data>(list, getComparator(order, orderBy)));
+  }, [list]);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -66,53 +72,65 @@ const DataTable = () => {
     setPage(0);
   };
 
+  const handleRowClick = (row: Data) => {
+    window.open(row.url, '_blank');
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
-      {loading ? (
-        <Paper sx={{ textAlign: 'center', padding: 5 }}>
-          <h2>Loading</h2>
-          <CircularProgress color={'error'} />
-        </Paper>
-      ) : (
-        <Paper sx={{ width: '100%', mb: 2 }}>
-          <DataTableToolbar />
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size={'medium'}
-            >
-              <DataTableHead
-                headCells={dataTableHeadCells}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell align="left">{row.id}</TableCell>
-                    <TableCell align="left">{row.username}</TableCell>
-                    <TableCell align="center">{row.description}</TableCell>
-                    <TableCell align="left">{row.starsCount}</TableCell>
-                    <TableCell align="left">{row.forksCount}</TableCell>
-                    <TableCell align="right">{row.updateDate}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      )}
+      <Paper sx={{ width: '100%', mb: 2 }}>
+        <DataTableToolbar />
+        {loading ? (
+          <Paper sx={{ textAlign: 'center', padding: 5 }}>
+            <h2>Loading</h2>
+            <CircularProgress color={'error'} />
+          </Paper>
+        ) : (
+          <>
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size={'medium'}
+              >
+                <DataTableHead
+                  headCells={dataTableHeadCells}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => handleRowClick(row)}
+                      hover={true}
+                    >
+                      <TableCell align="left">{row.id}</TableCell>
+                      <TableCell align="left">{row.username}</TableCell>
+                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="left">{row.starsCount}</TableCell>
+                      <TableCell align="left">{row.forksCount}</TableCell>
+                      <TableCell align="right">{row.updateDate}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={totalCount}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </>
+        )}
+      </Paper>
+      <Feedback open={!!error} message={`${error}`} />
     </Box>
   );
 };

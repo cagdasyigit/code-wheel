@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { IDataStore, Language } from './types';
-import { Data } from '../../components/DataTable/types';
+import { Data, Order } from '../../components/DataTable/types';
 
 const DataStore = create<IDataStore>((set) => ({
   keywords: '',
@@ -9,7 +9,7 @@ const DataStore = create<IDataStore>((set) => ({
   pageSize: 5,
   currentPage: 0,
   order: 'asc',
-  orderBy: 'name',
+  orderBy: 'updateDate',
   totalCount: 0,
   setKeywords: (keywords: string) =>
     set(() => ({
@@ -32,8 +32,9 @@ const DataStore = create<IDataStore>((set) => ({
     set(() => ({
       currentPage,
     })),
-  setOrderBy: (order: string, orderBy: string) =>
+  setOrderBy: (order: Order, orderBy: keyof Data) =>
     set(() => ({
+      order,
       orderBy,
     })),
 }));

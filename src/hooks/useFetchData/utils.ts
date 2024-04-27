@@ -9,6 +9,13 @@ export const mapSearchResultToData = (result: SearchResult): Data[] =>
       description: item.description,
       starsCount: item.stargazers_count,
       forksCount: item.forks_count,
-      updateDate: item.updated_at,
+      updateDate: new Date(item.updated_at).toLocaleString(),
+      url: item.svn_url,
     })
   );
+
+export const orderByKeyMap: { [key: string]: string } = {
+  starsCount: 'stars',
+  forksCount: 'forks',
+  updateDate: 'updated',
+};
