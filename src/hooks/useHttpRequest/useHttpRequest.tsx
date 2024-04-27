@@ -23,18 +23,22 @@ const useHttpRequest = () => {
     return axios.post<R>(url, payload, { headers });
   };
 
+  const getUrl = (param: string): string => {
+    return param.includes('http') ? param : MIDDLEWARE_URL + param;
+  };
+
   return <P, R>(request: HttpRequest<P> | string) => {
     if (typeof request === 'string') {
-      return get<R>(MIDDLEWARE_URL + request);
+      return get<R>(getUrl(request));
     }
 
     switch (request.method) {
       case 'GET':
-        return get<R>(MIDDLEWARE_URL + request.path, request.params);
+        return get<R>(getUrl(request.path), request.params);
       case 'POST':
-        return post<P, R>(MIDDLEWARE_URL + request.path, request.payload);
+        return post<P, R>(getUrl(request.path), request.payload);
       default:
-        return get<R>(MIDDLEWARE_URL + request.path, request.params);
+        return get<R>(getUrl(request.path), request.params);
     }
   };
 };

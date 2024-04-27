@@ -10,8 +10,8 @@ export interface Data {
 }
 
 export interface HeadCell {
-  disablePadding: boolean;
   id: keyof Data;
+  align: 'left' | 'right' | 'center';
   label: string;
 }
 
