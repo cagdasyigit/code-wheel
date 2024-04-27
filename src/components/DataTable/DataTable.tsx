@@ -63,60 +63,70 @@ const DataTable = () => {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: { sm: 0, md: 2 } }}>
         <DataTableToolbar />
-        {loading ? (
-          <Paper sx={{ textAlign: 'center', padding: 5 }}>
-            <h2>Loading</h2>
-            <CircularProgress color={'error'} />
-          </Paper>
-        ) : (
-          <>
-            <TableContainer>
-              <Table
-                sx={{ minWidth: 750 }}
-                aria-labelledby="tableTitle"
-                size={'medium'}
-              >
-                <DataTableHead
-                  headCells={dataTableHeadCells}
-                  order={order}
-                  orderBy={orderBy}
-                  onRequestSort={handleRequestSort}
-                />
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      sx={{ cursor: 'pointer' }}
-                      onClick={() => handleRowClick(row)}
-                      hover={true}
-                    >
-                      <TableCell align="left">{row.id}</TableCell>
-                      <TableCell align="left">{row.username}</TableCell>
-                      <TableCell align="center">
-                        {row.description.substring(0, 100)}
-                        {row.description.length > 100 && '...'}
-                      </TableCell>
-                      <TableCell align="left">{row.starsCount}</TableCell>
-                      <TableCell align="left">{row.forksCount}</TableCell>
-                      <TableCell align="right">{row.updateDate}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[10, 20, 30]}
-              component="div"
-              count={totalCount}
-              rowsPerPage={rowsPerPage}
-              labelRowsPerPage={'Page Size:'}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              size={'small'}
+        <TableContainer>
+          <Table
+            sx={{ minWidth: 750 }}
+            aria-labelledby="tableTitle"
+            size={'medium'}
+          >
+            <DataTableHead
+              headCells={dataTableHeadCells}
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
             />
-          </>
-        )}
+            {loading ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell
+                    align="left"
+                    sx={{ width: '100px', textAlign: 'center' }}
+                  >
+                    <h2>Loading</h2>
+                    <CircularProgress color={'error'} />
+                  </TableCell>
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              </TableBody>
+            ) : (
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => handleRowClick(row)}
+                    hover={true}
+                  >
+                    <TableCell align="left">{row.id}</TableCell>
+                    <TableCell align="left">{row.username}</TableCell>
+                    <TableCell align="center">
+                      {row.description.substring(0, 100)}
+                      {row.description.length > 100 && '...'}
+                    </TableCell>
+                    <TableCell align="left">{row.starsCount}</TableCell>
+                    <TableCell align="left">{row.forksCount}</TableCell>
+                    <TableCell align="right">{row.updateDate}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 30]}
+          component="div"
+          count={totalCount}
+          rowsPerPage={rowsPerPage}
+          labelRowsPerPage={'Page Size:'}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          size={'small'}
+        />
       </Paper>
       <Feedback open={!!error} message={`${error}`} />
     </Box>
