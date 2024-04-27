@@ -15,9 +15,11 @@
 
   img {
     width: 280px;
+    margin-right: 8px;
 
     @media screen and (max-width: $sm) {
       width: 200px;
+      margin-right: 0;
     }
   }
 
