@@ -78,18 +78,14 @@ const DataTable = () => {
             {loading ? (
               <TableBody>
                 <TableRow>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
                   <TableCell
+                    colSpan={6}
                     align="left"
                     sx={{ width: '100px', textAlign: 'center' }}
                   >
                     <h2>Loading</h2>
                     <CircularProgress color={'error'} />
                   </TableCell>
-                  <TableCell />
-                  <TableCell />
                 </TableRow>
               </TableBody>
             ) : (
