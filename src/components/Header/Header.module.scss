@@ -2,15 +2,34 @@
 
 .container {
   margin-bottom: 48px;
+  
+  @media screen and (max-width: $sm) {
+    margin-bottom: 24px;
+    padding: 16px 16px 0;
+  }
+
+  img {
+    width: 48px;
+
+    @media screen and (max-width: $sm) {
+      width: 32px;
+    }
+  }
 
   .brand {
     font-size: 2rem;
     margin-left: 24px;
+
+    @media screen and (max-width: $sm) {
+      font-size: 1.4rem;
+      margin-left: 12px;
+    }
   }
 
   .logout {
     cursor: pointer;
     color: $secondaryColor;
+    margin-top: 8px;
 
     &:hover {
       color: $primaryColor;

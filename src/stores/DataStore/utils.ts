@@ -7,9 +7,9 @@ export const initialValues = {
   keywords: savedState.keywords || '',
   list: savedState.list || [],
   language: savedState.language || ('Javascript' as Language),
-  pageSize: savedState.pageSize || 5,
+  pageSize: savedState.pageSize || 10,
   currentPage: savedState.currentPage || 0,
-  order: savedState.order || ('asc' as Order),
+  order: savedState.order || ('desc' as Order),
   orderBy: savedState.orderBy || ('updateDate' as keyof Data),
   totalCount: savedState.totalCount || 0,
 };

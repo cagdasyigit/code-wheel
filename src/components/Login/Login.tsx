@@ -25,7 +25,7 @@ const Login = () => {
       className={styles.container}
     >
       <Stack
-        direction={'row'}
+        direction={{ xs: 'column', md: 'row' }}
         alignItems={'center'}
         justifyContent={'center'}
         className={styles.innerBox}
@@ -42,7 +42,7 @@ const Login = () => {
             disabled={loading}
             size={'large'}
             variant={'contained'}
-            color={'info'}
+            color={'secondary'}
             onClick={handleLoginWithGithubClick}
           >
             <img src={github} />

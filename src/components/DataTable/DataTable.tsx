@@ -1,20 +1,3 @@
-/*
-
-The table should have 3 radio buttons where the user can select between.
-three programming languages: Javascript, Scala, Python ● The Javascript radio button will be pre-selected.
-
-● There will be a search input where users can search repositories based on keywords.
-● The search will use the query in the input combined with the selected language.
-● Search input will not have a submit button instead it will automatically fetch the results based on user input changes.
-● Table headers must consist of Repository ID, Username, Repo Description, Stars, Forks, and Last Update Date.
-● Sorting functionality must be implemented for stars, forks, and the last update date. And you can only sort by only one column at a time.
-● The table must have pagination implemented.
-● When sorting changes new data must be fetched from the server. It should not be done on the client side.
-● The application should remember the state when the user closes the page. So next time the user opens the page they must be greeted by the last changes they have made.
-● And lastly, the page should be fully responsive and accessible on mobile.
-
-*/
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -57,8 +40,8 @@ const DataTable = () => {
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrderBy(isAsc ? 'desc' : 'asc', property);
+    const isDesc = orderBy === property && order === 'desc';
+    setOrderBy(isDesc ? 'asc' : 'desc', property);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -78,7 +61,7 @@ const DataTable = () => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%', mb: { sm: 0, md: 2 } }}>
         <DataTableToolbar />
         {loading ? (
           <Paper sx={{ textAlign: 'center', padding: 5 }}>
@@ -109,7 +92,10 @@ const DataTable = () => {
                     >
                       <TableCell align="left">{row.id}</TableCell>
                       <TableCell align="left">{row.username}</TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">
+                        {row.description.substring(0, 100)}
+                        {row.description.length > 100 && '...'}
+                      </TableCell>
                       <TableCell align="left">{row.starsCount}</TableCell>
                       <TableCell align="left">{row.forksCount}</TableCell>
                       <TableCell align="right">{row.updateDate}</TableCell>
@@ -119,13 +105,15 @@ const DataTable = () => {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[10, 20, 30]}
               component="div"
               count={totalCount}
               rowsPerPage={rowsPerPage}
+              labelRowsPerPage={'Page Size:'}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              size={'small'}
             />
           </>
         )}

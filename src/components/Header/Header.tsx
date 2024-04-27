@@ -19,7 +19,7 @@ const Header = () => {
     <header className={styles.container}>
       <Stack direction={'row'} justifyContent={'space-between'}>
         <Stack direction={'row'} alignItems={'center'}>
-          <img src={logo} width={48} />
+          <img src={logo} />
           <span className={styles.brand}>Code Wheel</span>
         </Stack>
         <Box onClick={handleLogout} className={styles.logout}>
