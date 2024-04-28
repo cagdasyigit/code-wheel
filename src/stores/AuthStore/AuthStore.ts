@@ -1,9 +1,10 @@
 import { create } from 'zustand';
-import { type IAuthStore } from './types';
+import { GitHubUser, type IAuthStore } from './types';
 
 const AuthStore = create<IAuthStore>((set) => ({
   isAuthenticated: false,
   token: '',
+  user: null,
   authenticate: (token) =>
     set(() => ({
       isAuthenticated: true,
@@ -13,6 +14,11 @@ const AuthStore = create<IAuthStore>((set) => ({
     set(() => ({
       isAuthenticated: false,
       token: '',
+      user: null,
+    })),
+  setUser: (user: GitHubUser) =>
+    set(() => ({
+      user,
     })),
 }));
 

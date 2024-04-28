@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Button, Stack } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, CircularProgress, Stack } from '@mui/material';
 import styles from './Login.module.scss';
 import bgImage from '../../resources/images/codewheel-bg.jpeg';
 import logo from '../../resources/images/logo.png';
@@ -11,14 +11,29 @@ const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 
 const Login = () => {
   const { loading, error } = useAuthentication();
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const handleLoginWithGithubClick = () => {
+    setButtonDisabled(true);
     window.location.assign(
       `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`
     );
   };
 
-  return (
+  useEffect(() => {
+    setButtonDisabled(false);
+  }, [error]);
+
+  return loading ? (
+    <Stack
+      justifyContent={'center'}
+      alignItems={'center'}
+      sx={{ height: '100%', backgroundColor: '#ddd' }}
+    >
+      <h2>Loading</h2>
+      <CircularProgress color={'warning'} />
+    </Stack>
+  ) : (
     <Stack
       direction={'column'}
       justifyContent={'center'}
@@ -39,13 +54,17 @@ const Login = () => {
             <i>Don&apos;t reinvent the wheel!</i>
           </p>
           <Button
-            disabled={loading}
+            disabled={buttonDisabled}
             size={'large'}
             variant={'contained'}
             color={'secondary'}
             onClick={handleLoginWithGithubClick}
           >
-            <img src={github} />
+            {buttonDisabled ? (
+              <CircularProgress sx={{ marginRight: '8px' }} />
+            ) : (
+              <img src={github} />
+            )}
             Login with GitHub
           </Button>
         </Box>

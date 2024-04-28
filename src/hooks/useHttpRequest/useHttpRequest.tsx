@@ -5,22 +5,26 @@ import AuthStore from '../../stores/AuthStore';
 const MIDDLEWARE_URL = process.env.REACT_APP_MIDDLEWARE_URL;
 
 const useHttpRequest = () => {
-  const token = AuthStore((state) => state.token);
+  const getHeaders = () => {
+    const token = AuthStore.getState().token;
 
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
+    return {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    };
   };
 
   const get = <R,>(url: string, params?: { [key: string]: string }[]) => {
     return axios.get<R>(url, {
       params,
-      headers,
+      headers: getHeaders(),
     });
   };
 
   const post = <P, R>(url: string, payload?: P) => {
-    return axios.post<R>(url, payload, { headers });
+    return axios.post<R>(url, payload, { headers: getHeaders() });
   };
 
   const getUrl = (param: string): string => {

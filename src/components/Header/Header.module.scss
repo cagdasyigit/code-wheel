@@ -31,12 +31,25 @@
     color: $secondaryColor;
     margin-top: 8px;
 
-    &:hover {
-      color: $primaryColor;
+    & > div {
+      &:hover {
+        color: $primaryColor;
+      }
+      span {
+        margin-right: 8px;
+      }
     }
 
-    span {
-      margin-right: 8px;
+    a {
+      text-decoration: none;
+
+      &:visited {
+        color: $secondaryColor;
+      }
+
+      &:hover {
+        color: $primaryColor;
+      }
     }
   }
 }
