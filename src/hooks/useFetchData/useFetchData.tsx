@@ -6,6 +6,8 @@ import { SearchResult } from './types';
 import { debounce } from '@mui/material';
 import { Language } from '../../stores/DataStore/types';
 
+export const DEBOUNCE_TIMEOUT = 500;
+
 const useFetchData = () => {
   const httpRequest = useHttpRequest();
   const { language, keywords, currentPage, pageSize, order, orderBy, setList } =
@@ -44,7 +46,7 @@ const useFetchData = () => {
     debounce(
       (language, keywords, currentPage, pageSize, order, orderBy) =>
         fetch(language, keywords, currentPage, pageSize, order, orderBy),
-      500
+      DEBOUNCE_TIMEOUT
     ),
     []
   );
